@@ -27,12 +27,12 @@ int	ft_atoi(const char *str)
 	return (result * sign);
 }
 
-long long get_time_ms(void)
+long long	get_time_ms(void)
 {
-    struct timeval tv;
-    long long time_ms;
+	struct timeval	tv;
+	long long		time_ms;
 
-    gettimeofday(&tv, NULL);
-    time_ms = (tv.tv_sec) * 100 + (tv.tv_usec) / 1000;
-    return (time_ms);
+	gettimeofday(&tv, NULL);
+	time_ms = (tv.tv_sec) * 100 + (tv.tv_usec) / 1000;
+	return (time_ms);
 }

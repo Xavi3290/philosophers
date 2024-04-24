@@ -1,6 +1,5 @@
 #include "philo.h"
 
-void  *actions(void *void_philo)
+void	*actions(void *void_philo)
 {
-    
 }
