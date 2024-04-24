@@ -1,6 +1,35 @@
 #include "philo.h"
 
-int	check_args(int argc, char **argv)
+static int threads(t_philo *philo)
+{
+    int i;
+    pthread_t *thr;
+
+    i = 0;
+    thr = malloc(sizeof(pthread_t) * (philo->data->philo_num));
+    if (!thr)
+        return (1);
+    while (i < philo->data->philo_num)
+        if (pthread_create(&thr[i++], NULL, actions, &philo[i]))
+            return (1);
+    i = 0;
+    while (i < philo->data->philo_num)
+        if (pthread_join(thr[i++], NULL))
+            return (1);
+    free(thr);
+    i = 0;
+    while (i < philo->data->philo_num)
+        if (pthread_mutex_destroy(&philo->data->fork[i++]))
+            return (1);
+    free(philo->data->fork);
+    free(philo->data->list);
+    pthread_mutex_destroy(&philo->data->print);
+    free(philo->data);
+    free(philo);
+    return (0);
+}
+
+static int	check_args(int argc, char **argv)
 {
 	if (argc == 5 || argc == 6)
 	{
@@ -30,5 +59,9 @@ int	main(int argc, char **argv)
 	if (check_args(argc, argv))
 		return (1);
     philo = init_philos(argc, argv);
+    if (!philo)
+        return (1);
+    if (threads(philo))
+        return (1);
     return (0);
 }

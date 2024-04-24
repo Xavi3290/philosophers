@@ -34,4 +34,6 @@ long long get_time_ms(void);
 
 t_philo	*init_philos(int argc, char **argv);
 
+void  *actions(void *void_philo);
+
 #endif
