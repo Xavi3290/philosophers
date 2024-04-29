@@ -6,7 +6,7 @@
 /*   By: xavi <xavi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/25 12:04:05 by xroca-pe          #+#    #+#             */
-/*   Updated: 2024/04/29 17:19:28 by xavi             ###   ########.fr       */
+/*   Updated: 2024/04/29 20:07:01 by xavi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,12 +40,18 @@ static int	threads(t_philo *philo)
 	if (!thr)
 		return (1);
 	while (i < philo->data->philo_num)
-		if (pthread_create(&thr[i++], NULL, actions, &philo[i]))
+	{
+		if (pthread_create(&thr[i], NULL, actions, &philo[i]))
 			return (1);
+		i++;
+	}
 	i = 0;
 	while (i < philo->data->philo_num)
-		if (pthread_join(thr[i++], NULL))
-			return (1);
+	{
+			if (pthread_join(thr[i], NULL))
+				return (1);
+			i++;
+	}
 	if (free_threads_and_philo(philo, thr))
 		return (1);
 	return (0);
@@ -87,9 +93,9 @@ static int	check_args(int argc, char **argv)
 			return (printf("There must be at least 1 philosopher.\n"));
 		if (ft_atoi(argv[2]) < 1)
 			return (printf("Time_to_die must be at least 1.\n"));
-		if (ft_atoi(argv[3] < 1))
+		if (ft_atoi(argv[3]) < 1)
 			return (printf("Time_to_eat must be at least 1.\n"));
-		if (ft_atoi(argv[4] < 1))
+		if (ft_atoi(argv[4]) < 1)
 			return (printf("Time_to_sleep must be at least 1.\n"));
 		if (argc == 6 && ft_atoi(argv[5]) < 1)
 			return (printf("Number_of_times_each_philosopher_must_eat \
@@ -106,7 +112,7 @@ int	main(int argc, char **argv)
 {
 	t_philo	*philo;
 
-	if (error_syntax || check_args(argc, argv))
+	if (error_syntax(argv) || check_args(argc, argv))
 		return (1);
 	philo = init_philos(argc, argv);
 	if (!philo)

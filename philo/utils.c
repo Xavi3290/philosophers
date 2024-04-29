@@ -6,7 +6,7 @@
 /*   By: xavi <xavi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/25 12:04:19 by xroca-pe          #+#    #+#             */
-/*   Updated: 2024/04/29 17:22:23 by xavi             ###   ########.fr       */
+/*   Updated: 2024/04/29 19:21:33 by xavi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,4 +77,21 @@ void	print_info(t_philo *philo, char *str)
 		printf("%lld %d %s\n", time_ms, philo->id, str);
 	if (pthread_mutex_unlock(&philo->data->print))
 		return ;
+}
+
+int	check_alive(t_philo *philo)
+{
+	long long	time_ms;
+
+	time_ms = get_time_ms();
+	if (philo->time_last_meal == 0)
+		philo->time_last_meal = get_time_ms() - 1;
+	if (philo->data->alive == 0)
+		return (0);
+	if (time_ms - philo->time_last_meal > philo->data->time_die)
+	{
+		print_dead(philo);
+		return (0);
+	}
+	return (1);
 }

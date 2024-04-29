@@ -3,16 +3,16 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: xroca-pe <xroca-pe@student.42.fr>          +#+  +:+       +#+         #
+#    By: xavi <xavi@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/25 12:03:58 by xroca-pe          #+#    #+#              #
-#    Updated: 2024/04/25 12:04:02 by xroca-pe         ###   ########.fr        #
+#    Updated: 2024/04/29 21:05:20 by xavi             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = philo
 CC = cc
-CFLAGS = -Wall -Werror -Wextra -lphtread
+CFLAGS = -Wall -Werror -Wextra -lpthread
 RM = rm -f
 INCLUDE = philo.h Makefile
 
