@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xroca-pe <xroca-pe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: xavi <xavi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/25 12:03:54 by xroca-pe          #+#    #+#             */
-/*   Updated: 2024/04/25 12:04:57 by xroca-pe         ###   ########.fr       */
+/*   Updated: 2024/04/29 17:18:33 by xavi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,8 @@ static t_data	*init_data(int argc, char **argv)
 		data->num_to_eat = ft_atoi(argv[5]);
 	else
 		data->num_to_eat = 0;
+	if (pthread_mutex_init(&data->print, NULL))
+		return (NULL);
 	return (data);
 }
 

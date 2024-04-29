@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: xroca-pe <xroca-pe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: xavi <xavi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/25 12:04:13 by xroca-pe          #+#    #+#             */
-/*   Updated: 2024/04/25 12:04:16 by xroca-pe         ###   ########.fr       */
+/*   Updated: 2024/04/29 17:18:57 by xavi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ typedef struct s_data
 	long long		start;
 	pthread_mutex_t	*fork;
 	int				*list;
+	pthread_mutex_t	print;
 }					t_data;
 
 typedef struct s_philo
