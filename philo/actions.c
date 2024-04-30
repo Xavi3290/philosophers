@@ -6,7 +6,7 @@
 /*   By: xavi <xavi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/25 12:03:41 by xroca-pe          #+#    #+#             */
-/*   Updated: 2024/04/30 12:43:43 by xavi             ###   ########.fr       */
+/*   Updated: 2024/04/30 14:10:13 by xavi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static int	sleeping(t_philo *philo, long long time_eat)
 	long long	time_ms;
 
 	time_ms = get_time_ms();
-	philo->data->alive = check_alive(philo);
+	check_alive(philo);
 	while (philo->data->alive)
 	{
 		if (get_time_ms() - time_ms > philo->data->time_die - 1)
@@ -25,7 +25,7 @@ static int	sleeping(t_philo *philo, long long time_eat)
 			if (print_dead(philo))
 				return (1);
 		}
-		if (get_time_ms() >= time_eat)
+		if (get_time_ms() - time_ms >= time_eat)
 			break ;
 		usleep(50);
 	}
