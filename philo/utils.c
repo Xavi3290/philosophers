@@ -6,7 +6,7 @@
 /*   By: xavi <xavi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/25 12:04:19 by xroca-pe          #+#    #+#             */
-/*   Updated: 2024/04/29 19:21:33 by xavi             ###   ########.fr       */
+/*   Updated: 2024/04/30 12:49:25 by xavi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@ int	ft_atoi(const char *str)
 	i = 0;
 	result = 0;
 	sign = 1;
-	while (str[i] == '\f' || str[i] == '\n' || str[i] == '\r' || str[i] == '\t'
-		|| str[i] == '\v' || str[i] == ' ')
+	while (str[i] == '\f' || str[i] == '\n' || str[i] == '\r'
+		|| str[i] == '\t' || str[i] == '\v' || str[i] == ' ')
 		i++;
 	if (str[i] == '-')
 	{
@@ -45,16 +45,16 @@ long long	get_time_ms(void)
 	long long		time_ms;
 
 	gettimeofday(&tv, NULL);
-	time_ms = (tv.tv_sec) * 100 + (tv.tv_usec) / 1000;
+	time_ms = (tv.tv_sec) * 1000 + (tv.tv_usec) / 1000;
 	return (time_ms);
 }
 
-void	print_dead(t_philo *philo)
+int	print_dead(t_philo *philo)
 {
 	long long	time_ms;
 
 	if (pthread_mutex_lock(&philo->data->print))
-		return ;
+		return (1);
 	time_ms = get_time_ms() - philo->data->start;
 	if (philo->data->alive)
 	{
@@ -63,20 +63,22 @@ void	print_dead(t_philo *philo)
 		printf("%lld %d died\n", time_ms, philo->id);
 	}
 	if (pthread_mutex_unlock(&philo->data->print))
-		return ;
+		return (1);
+	return (0);
 }
 
-void	print_info(t_philo *philo, char *str)
+int	print_info(t_philo *philo, char *str)
 {
 	long long	time_ms;
 
 	if (pthread_mutex_lock(&philo->data->print))
-		return ;
+		return (1);
 	time_ms = get_time_ms() - philo->data->start;
 	if (philo->data->alive)
 		printf("%lld %d %s\n", time_ms, philo->id, str);
 	if (pthread_mutex_unlock(&philo->data->print))
-		return ;
+		return (1);
+	return (0);
 }
 
 int	check_alive(t_philo *philo)

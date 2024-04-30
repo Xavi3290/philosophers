@@ -6,50 +6,55 @@
 /*   By: xavi <xavi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/25 12:03:41 by xroca-pe          #+#    #+#             */
-/*   Updated: 2024/04/30 11:40:08 by xavi             ###   ########.fr       */
+/*   Updated: 2024/04/30 12:43:43 by xavi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-static void	sleeping(t_philo *philo, long long time_eat)
+static int	sleeping(t_philo *philo, long long time_eat)
 {
 	long long	time_ms;
 
 	time_ms = get_time_ms();
-	check_alive(philo);
+	philo->data->alive = check_alive(philo);
 	while (philo->data->alive)
 	{
 		if (get_time_ms() - time_ms > philo->data->time_die - 1)
-			print_dead(philo);
+		{
+			if (print_dead(philo))
+				return (1);
+		}
 		if (get_time_ms() >= time_eat)
 			break ;
 		usleep(50);
 	}
+	return (0);
 }
 
 static int	eating(t_philo *philo)
 {
-	if (pthread_mutex_lock(&philo->data->fork[philo->id - 1]))
+	if (pthread_mutex_lock(&philo->data->fork[philo->id - 1])
+		|| print_info(philo, "has taken a fork"))
 		return (1);
-	print_info(philo, "has taken a fork");
 	if (philo->id == philo->data->philo_num)
-    {
+	{
 		if (pthread_mutex_lock(&philo->data->fork[0]))
 			return (1);
-    }
+	}
 	else
-    {
-        if (pthread_mutex_lock(&philo->data->fork[philo->id]))
+	{
+		if (pthread_mutex_lock(&philo->data->fork[philo->id]))
 			return (1);
-    }
-	print_info(philo, "has taken a fork");
+	}
+	if (print_info(philo, "has taken a fork"))
+		return (1);
 	modify_list(philo->data, philo->id);
-	print_info(philo, "is eating");
+	if (print_info(philo, "is eating"))
+		return (1);
 	philo->time_last_meal = get_time_ms();
 	philo->num_eat++;
-	sleeping(philo, philo->data->time_eat);
-	if (eating_unlock(philo))
+	if (sleeping(philo, philo->data->time_eat) || eating_unlock(philo))
 		return (1);
 	return (0);
 }
@@ -68,9 +73,10 @@ static int	routine(t_philo *philo)
 			if (philo->data->num_to_eat
 				&& philo->num_eat == philo->data->num_to_eat)
 				break ;
-			print_info(philo, "is sleeping");
-			sleeping(philo, philo->data->time_sleap);
-			print_info(philo, "is thinking");
+			if (print_info(philo, "is sleeping") || sleeping(philo,
+					philo->data->time_sleap) || print_info(philo,
+					"is thinking"))
+				return (1);
 		}
 		check_alive(philo);
 	}

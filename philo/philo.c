@@ -6,7 +6,7 @@
 /*   By: xavi <xavi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/25 12:04:05 by xroca-pe          #+#    #+#             */
-/*   Updated: 2024/04/29 20:07:01 by xavi             ###   ########.fr       */
+/*   Updated: 2024/04/30 12:47:23 by xavi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,9 +48,9 @@ static int	threads(t_philo *philo)
 	i = 0;
 	while (i < philo->data->philo_num)
 	{
-			if (pthread_join(thr[i], NULL))
-				return (1);
-			i++;
+		if (pthread_join(thr[i], NULL))
+			return (1);
+		i++;
 	}
 	if (free_threads_and_philo(philo, thr))
 		return (1);
