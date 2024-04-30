@@ -6,7 +6,7 @@
 /*   By: xavi <xavi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/25 12:04:19 by xroca-pe          #+#    #+#             */
-/*   Updated: 2024/04/30 12:49:25 by xavi             ###   ########.fr       */
+/*   Updated: 2024/04/30 16:00:57 by xavi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,9 +86,9 @@ int	check_alive(t_philo *philo)
 	long long	time_ms;
 
 	time_ms = get_time_ms();
-	if (philo->time_last_meal == 0)
+	if (!philo->time_last_meal)
 		philo->time_last_meal = get_time_ms() - 1;
-	if (philo->data->alive == 0)
+	if (!philo->data->alive)
 		return (0);
 	if (time_ms - philo->time_last_meal > philo->data->time_die)
 	{
