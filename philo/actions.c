@@ -6,13 +6,13 @@
 /*   By: xavi <xavi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/25 12:03:41 by xroca-pe          #+#    #+#             */
-/*   Updated: 2024/04/30 17:02:07 by xavi             ###   ########.fr       */
+/*   Updated: 2024/04/30 18:29:01 by xavi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int	eating_unlock(t_philo *philo)
+static int	fork_unlock(t_philo *philo)
 {
 	if (pthread_mutex_unlock(&philo->data->fork[philo->id - 1]))
 		return (1);
@@ -71,7 +71,7 @@ static int	eating(t_philo *philo)
 		return (1);
 	philo->time_last_meal = get_time_ms();
 	philo->num_eat++;
-	if (sleeping(philo, philo->data->time_eat) || eating_unlock(philo))
+	if (sleeping(philo, philo->data->time_eat) || fork_unlock(philo))
 		return (1);
 	return (0);
 }
