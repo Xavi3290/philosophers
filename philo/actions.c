@@ -6,7 +6,7 @@
 /*   By: xavi <xavi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/25 12:03:41 by xroca-pe          #+#    #+#             */
-/*   Updated: 2024/04/29 20:49:36 by xavi             ###   ########.fr       */
+/*   Updated: 2024/04/30 11:40:08 by xavi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,20 +28,20 @@ static void	sleeping(t_philo *philo, long long time_eat)
 	}
 }
 
-static void	eating(t_philo *philo)
+static int	eating(t_philo *philo)
 {
 	if (pthread_mutex_lock(&philo->data->fork[philo->id - 1]))
-		return ;
+		return (1);
 	print_info(philo, "has taken a fork");
 	if (philo->id == philo->data->philo_num)
     {
 		if (pthread_mutex_lock(&philo->data->fork[0]))
-			return ;
+			return (1);
     }
 	else
     {
         if (pthread_mutex_lock(&philo->data->fork[philo->id]))
-			return ;
+			return (1);
     }
 	print_info(philo, "has taken a fork");
 	modify_list(philo->data, philo->id);
@@ -49,10 +49,12 @@ static void	eating(t_philo *philo)
 	philo->time_last_meal = get_time_ms();
 	philo->num_eat++;
 	sleeping(philo, philo->data->time_eat);
-	eating_unlock(philo);
+	if (eating_unlock(philo))
+		return (1);
+	return (0);
 }
 
-static void	routine(t_philo *philo)
+static int	routine(t_philo *philo)
 {
 	while (philo->data->alive)
 	{
@@ -61,7 +63,8 @@ static void	routine(t_philo *philo)
 			continue ;
 		if (philo->data->philo_num != 1)
 		{
-			eating(philo);
+			if (eating(philo))
+				return (1);
 			if (philo->data->num_to_eat
 				&& philo->num_eat == philo->data->num_to_eat)
 				break ;
@@ -71,6 +74,7 @@ static void	routine(t_philo *philo)
 		}
 		check_alive(philo);
 	}
+	return (0);
 }
 
 static void	*is_alive(void *void_philo)
@@ -93,6 +97,7 @@ void	*actions(void *void_philo)
 		return (NULL);
 	if (pthread_detach(thr))
 		return (NULL);
-	routine(philo);
+	if (routine(philo))
+		return (NULL);
 	return (0);
 }
