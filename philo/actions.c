@@ -6,7 +6,7 @@
 /*   By: xavi <xavi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/25 12:03:41 by xroca-pe          #+#    #+#             */
-/*   Updated: 2024/04/30 16:06:26 by xavi             ###   ########.fr       */
+/*   Updated: 2024/04/30 16:21:05 by xavi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,11 @@ void	*actions(void *void_philo)
 		return (NULL);
 	if (pthread_detach(thr))
 		return (NULL);
+	if (philo->data->philo_num == 1)
+	{
+		if (print_info(philo, "has taken a fork"))
+			return (NULL);
+	}
 	if (routine(philo))
 		return (NULL);
 	return (0);
