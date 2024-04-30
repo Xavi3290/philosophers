@@ -6,11 +6,28 @@
 /*   By: xavi <xavi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/25 12:03:41 by xroca-pe          #+#    #+#             */
-/*   Updated: 2024/04/30 16:21:05 by xavi             ###   ########.fr       */
+/*   Updated: 2024/04/30 17:02:07 by xavi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+int	eating_unlock(t_philo *philo)
+{
+	if (pthread_mutex_unlock(&philo->data->fork[philo->id - 1]))
+		return (1);
+	if (philo->id == philo->data->philo_num)
+	{
+		if (pthread_mutex_unlock(&philo->data->fork[0]))
+			return (1);
+	}
+	else
+	{
+		if (pthread_mutex_unlock(&philo->data->fork[philo->id]))
+			return (1);
+	}
+	return (0);
+}
 
 static int	sleeping(t_philo *philo, long long time_eat)
 {
@@ -83,26 +100,11 @@ static int	routine(t_philo *philo)
 	return (0);
 }
 
-static void	*is_alive(void *void_philo)
-{
-	t_philo	*philo;
-
-	philo = void_philo;
-	while (philo->data->alive)
-		philo->data->alive = check_alive(philo);
-	return (NULL);
-}
-
 void	*actions(void *void_philo)
 {
 	t_philo		*philo;
-	pthread_t	thr;
 
 	philo = void_philo;
-	if (pthread_create(&thr, NULL, is_alive, philo))
-		return (NULL);
-	if (pthread_detach(thr))
-		return (NULL);
 	if (philo->data->philo_num == 1)
 	{
 		if (print_info(philo, "has taken a fork"))

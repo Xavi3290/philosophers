@@ -6,7 +6,7 @@
 /*   By: xavi <xavi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/25 12:03:41 by xroca-pe          #+#    #+#             */
-/*   Updated: 2024/04/30 16:19:59 by xavi             ###   ########.fr       */
+/*   Updated: 2024/04/30 17:02:44 by xavi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,21 +23,4 @@ void	modify_list(t_data *data, int id)
 		i++;
 	}
 	data->list[i] = id;
-}
-
-int	eating_unlock(t_philo *philo)
-{
-	if (pthread_mutex_unlock(&philo->data->fork[philo->id - 1]))
-		return (1);
-	if (philo->id == philo->data->philo_num)
-	{
-		if (pthread_mutex_unlock(&philo->data->fork[0]))
-			return (1);
-	}
-	else
-	{
-		if (pthread_mutex_unlock(&philo->data->fork[philo->id]))
-			return (1);
-	}
-	return (0);
 }

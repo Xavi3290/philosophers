@@ -6,7 +6,7 @@
 /*   By: xavi <xavi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/25 12:04:13 by xroca-pe          #+#    #+#             */
-/*   Updated: 2024/04/30 12:47:16 by xavi             ###   ########.fr       */
+/*   Updated: 2024/04/30 17:02:32 by xavi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,5 @@ t_philo				*init_philos(int argc, char **argv);
 void				modify_list(t_data *data, int id);
 
 void				*actions(void *void_philo);
-int					eating_unlock(t_philo *philo);
 
 #endif
