@@ -6,7 +6,7 @@
 /*   By: xavi <xavi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/25 12:03:41 by xroca-pe          #+#    #+#             */
-/*   Updated: 2024/04/30 18:29:01 by xavi             ###   ########.fr       */
+/*   Updated: 2024/04/30 20:05:17 by xavi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static int	fork_unlock(t_philo *philo)
 	return (0);
 }
 
-static int	sleeping(t_philo *philo, long long time_eat)
+static int	sleeping(t_philo *philo, long long time_eat_sleep)
 {
 	long long	time_ms;
 
@@ -42,7 +42,7 @@ static int	sleeping(t_philo *philo, long long time_eat)
 			if (print_dead(philo))
 				return (1);
 		}
-		if (get_time_ms() - time_ms >= time_eat)
+		if (get_time_ms() - time_ms >= time_eat_sleep)
 			break ;
 		usleep(50);
 	}
