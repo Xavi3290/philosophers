@@ -6,7 +6,7 @@
 /*   By: xavi <xavi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/25 12:05:17 by xroca-pe          #+#    #+#             */
-/*   Updated: 2024/05/02 18:01:23 by xavi             ###   ########.fr       */
+/*   Updated: 2024/05/02 18:10:05 by xavi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static t_data	*init_data(int argc, char **argv)
 		return (NULL);
 	data->print = sem_open("/p_print", O_CREAT, 0700, 1);
 	data->fork = sem_open("/p_fork", O_CREAT, 0700, data->philo_num);
-	if (data->print == -1 || data->fork == -1)
+	if (data->print == SEM_FAILED || data->fork == SEM_FAILED)
 		return (NULL);
 	return (data);
 }

@@ -6,13 +6,13 @@
 #    By: xavi <xavi@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/25 12:05:21 by xroca-pe          #+#    #+#              #
-#    Updated: 2024/05/02 15:21:01 by xavi             ###   ########.fr        #
+#    Updated: 2024/05/02 18:07:06 by xavi             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = philo_bonus
 CC = cc
-CFLAGS = -Wall -Werror -Wextra -lphtread
+CFLAGS = -Wall -Werror -Wextra
 RM = rm -f
 INCLUDE = philo_bonus.h Makefile
 
