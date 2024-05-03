@@ -6,7 +6,7 @@
 /*   By: xavi <xavi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/25 12:05:25 by xroca-pe          #+#    #+#             */
-/*   Updated: 2024/05/02 18:06:24 by xavi             ###   ########.fr       */
+/*   Updated: 2024/05/03 17:51:20 by xavi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,8 @@ int	main(int argc, char **argv)
 	while (i < philo->data->philo_num)
 	{
 		philo[i].pid = fork();
+		if (philo[i].pid == -1)
+			exit(EXIT_FAILURE);
 		if (philo[i].pid == 0)
 			actions(&(philo[i]));
 		i++;
