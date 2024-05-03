@@ -6,7 +6,7 @@
 /*   By: xavi <xavi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/25 12:05:13 by xroca-pe          #+#    #+#             */
-/*   Updated: 2024/05/03 17:26:01 by xavi             ###   ########.fr       */
+/*   Updated: 2024/05/03 18:12:43 by xavi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,9 +55,6 @@ static int	routine(t_philo *philo)
 {
 	while (philo->data->alive)
 	{
-		philo->data->alive = check_alive(philo);
-		if (philo->id != philo->data->list[0])
-			continue ;
 		if (philo->data->philo_num != 1)
 		{
 			if (eating(philo))
