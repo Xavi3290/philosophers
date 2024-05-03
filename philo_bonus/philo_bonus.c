@@ -6,7 +6,7 @@
 /*   By: xavi <xavi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/25 12:05:25 by xroca-pe          #+#    #+#             */
-/*   Updated: 2024/05/03 18:14:19 by xavi             ###   ########.fr       */
+/*   Updated: 2024/05/03 19:33:09 by xavi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,7 @@ int	main(int argc, char **argv)
 			exit(EXIT_FAILURE);
 		if (philo[i].pid == 0)
 			actions(&(philo[i]));
+		waitpid(philo[i].pid, NULL, 0);
 		i++;
 	}
 	if (free_sem_data(philo))
