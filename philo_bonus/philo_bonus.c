@@ -6,7 +6,7 @@
 /*   By: xavi <xavi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/25 12:05:25 by xroca-pe          #+#    #+#             */
-/*   Updated: 2024/05/03 19:33:09 by xavi             ###   ########.fr       */
+/*   Updated: 2024/05/06 19:39:45 by xavi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,13 @@ static int	free_sem_data(t_philo *philo)
 		kill(philo[i].pid, SIGKILL);
 		i++;
 	}
-	if (sem_close(philo->data->fork) == -1 || sem_close(philo->data->print) == \
-		-1)
+	if (sem_close(philo->data->fork) == -1)
+		return (1);
+	if (sem_close(philo->data->print) == -1)
 		return (1);
 	if (sem_unlink("/p_fork") == -1 || sem_unlink("/p_print") == -1)
+		return (1);
+	if (sem_unlink("/p_eat") == -1 || sem_unlink("/p_alive") == -1)
 		return (1);
 	free(philo->data);
 	free(philo);
@@ -83,27 +86,43 @@ static int	check_args(int argc, char **argv)
 	return (0);
 }
 
-int	main(int argc, char **argv)
+static void	*all_eat(void *void_philo)
 {
 	t_philo	*philo;
-	int		i;
+	int		eats;
 
-	i = 0;
+	philo = void_philo;
+	eats = 0;
+	while (eats < philo->data->num_to_eat * philo->data->philo_num)
+	{
+		if (sem_wait(philo->data->sem_eat))
+			return (NULL);
+		if (!philo->data->alive)
+			return (NULL);
+		eats++;
+	}
+	if (sem_post(philo->data->sem_alive))
+		return (NULL);
+	return (0);
+}
+
+int	main(int argc, char **argv)
+{
+	t_philo		*philo;
+	pthread_t	thr;
+
 	if (error_syntax(argv) || check_args(argc, argv))
 		exit(EXIT_FAILURE);
 	philo = init_philos(argc, argv);
 	if (!philo)
 		exit(EXIT_FAILURE);
-	while (i < philo->data->philo_num)
+	if (argv[5])
 	{
-		philo[i].pid = fork();
-		if (philo[i].pid == -1)
+		if (pthread_create(&thr, NULL, &all_eat, philo))
 			exit(EXIT_FAILURE);
-		if (philo[i].pid == 0)
-			actions(&(philo[i]));
-		waitpid(philo[i].pid, NULL, 0);
-		i++;
 	}
+	if (do_actions(philo))
+		exit(EXIT_FAILURE);
 	if (free_sem_data(philo))
 		exit(EXIT_FAILURE);
 	return (0);

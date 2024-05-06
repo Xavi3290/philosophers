@@ -6,7 +6,7 @@
 /*   By: xavi <xavi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/25 12:05:13 by xroca-pe          #+#    #+#             */
-/*   Updated: 2024/05/03 19:37:24 by xavi             ###   ########.fr       */
+/*   Updated: 2024/05/06 19:37:43 by xavi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,8 @@ static int	eating(t_philo *philo)
 		return (1);
 	philo->time_last_meal = get_time_ms();
 	philo->num_eat++;
+	if (sem_post(philo->data->sem_eat))
+		return (1);
 	if (sleeping(philo, philo->data->time_eat))
 		return (1);
 	if (sem_post(philo->data->fork) == -1 || sem_post(philo->data->fork) == -1)
@@ -69,15 +71,18 @@ static int	routine(t_philo *philo)
 		}
 		philo->data->alive = check_alive(philo);
 	}
-	exit (EXIT_SUCCESS);
+	exit(EXIT_SUCCESS);
 	return (0);
 }
 
-void	*actions(void *void_philo)
+static void	*actions(void *void_philo)
 {
-	t_philo	*philo;
+	t_philo		*philo;
+	pthread_t	thr;
 
 	philo = (t_philo *)void_philo;
+	if (pthread_create(&thr, NULL, &is_alive, philo) || pthread_detach(thr))
+		return (NULL);
 	if (philo->data->philo_num == 1)
 	{
 		if (print_info(philo, "has taken a fork"))
@@ -85,5 +90,27 @@ void	*actions(void *void_philo)
 	}
 	if (routine(philo))
 		return (NULL);
+	return (0);
+}
+
+int	do_actions(t_philo *philo)
+{
+	int	i;
+
+	i = 0;
+	while (i < philo->data->philo_num)
+	{
+		philo[i].pid = fork();
+		if (philo[i].pid == -1)
+			exit(EXIT_FAILURE);
+		if (philo[i].pid == 0)
+			actions(&(philo[i]));
+		i++;
+	}
+	if (sem_wait(philo->data->sem_alive))
+		return (1);
+	philo->data->alive = 0;
+	if (sem_post(philo->data->sem_eat))
+		return (1);
 	return (0);
 }

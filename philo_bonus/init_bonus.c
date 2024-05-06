@@ -6,11 +6,28 @@
 /*   By: xavi <xavi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/25 12:05:17 by xroca-pe          #+#    #+#             */
-/*   Updated: 2024/05/03 17:49:37 by xavi             ###   ########.fr       */
+/*   Updated: 2024/05/06 19:37:11 by xavi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
+
+static t_data	*open_sem(t_data *data)
+{
+	sem_unlink("/p_fork");
+	sem_unlink("/p_print");
+	sem_unlink("/p_alive");
+	sem_unlink("/p_eat");
+	data->sem_eat = sem_open("/p_eat", O_CREAT, 0700, 0);
+	data->sem_alive = sem_open("/p_alive", O_CREAT, 0700, 0);
+	data->print = sem_open("/p_print", O_CREAT, 0700, 1);
+	data->fork = sem_open("/p_fork", O_CREAT, 0700, data->philo_num);
+	if (data->print == SEM_FAILED || data->fork == SEM_FAILED)
+		return (NULL);
+	if (data->sem_alive == SEM_FAILED || data->sem_eat == SEM_FAILED)
+		return (NULL);
+	return (data);
+}
 
 static t_data	*init_data(int argc, char **argv)
 {
@@ -29,11 +46,8 @@ static t_data	*init_data(int argc, char **argv)
 		data->num_to_eat = ft_atoi(argv[5]);
 	else
 		data->num_to_eat = 0;
-	sem_unlink("/p_fork");
-	sem_unlink("/p_print");
-	data->print = sem_open("/p_print", O_CREAT, 0700, 1);
-	data->fork = sem_open("/p_fork", O_CREAT, 0700, data->philo_num);
-	if (data->print == SEM_FAILED || data->fork == SEM_FAILED)
+	data = open_sem(data);
+	if (!data)
 		return (NULL);
 	return (data);
 }
@@ -60,4 +74,14 @@ t_philo	*init_philos(int argc, char **argv)
 		i++;
 	}
 	return (philo);
+}
+
+void	*is_alive(void *v_philo)
+{
+	t_philo	*philo;
+
+	philo = v_philo;
+	while (philo->data->alive)
+		philo->data->alive = check_alive(philo);
+	return (NULL);
 }

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils_bonus.h                                      :+:      :+:    :+:   */
+/*   utils_bonus.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: xavi <xavi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/25 12:05:33 by xroca-pe          #+#    #+#             */
-/*   Updated: 2024/05/02 17:59:07 by xavi             ###   ########.fr       */
+/*   Updated: 2024/05/06 18:28:04 by xavi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ int	print_dead(t_philo *philo)
 		usleep(1000);
 		printf("%lld %d died\n", time_ms, philo->id);
 	}
-	if (sem_post(philo->data->print) == -1)
+	if (sem_post(philo->data->sem_alive) == -1)
 		return (1);
 	return (0);
 }

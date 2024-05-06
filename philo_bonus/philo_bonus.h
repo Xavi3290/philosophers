@@ -6,7 +6,7 @@
 /*   By: xavi <xavi@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/25 12:05:29 by xroca-pe          #+#    #+#             */
-/*   Updated: 2024/05/02 17:44:37 by xavi             ###   ########.fr       */
+/*   Updated: 2024/05/06 19:35:02 by xavi             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@ typedef struct s_data
 	sem_t		*fork;
 	int			*list;
 	sem_t		*print;
+	sem_t		*sem_alive;
+	sem_t		*sem_eat;
 }				t_data;
 
 typedef struct s_philo
@@ -55,7 +57,8 @@ int				print_info(t_philo *philo, char *str);
 int				check_alive(t_philo *philo);
 
 t_philo			*init_philos(int argc, char **argv);
+void			*is_alive(void *v_philo);
 
-void			*actions(void *void_philo);
+int				do_actions(t_philo *philo);
 
 #endif
