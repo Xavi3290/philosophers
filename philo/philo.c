@@ -6,7 +6,7 @@
 /*   By: xroca-pe <xroca-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/25 12:04:05 by xroca-pe          #+#    #+#             */
-/*   Updated: 2024/05/07 13:27:07 by xroca-pe         ###   ########.fr       */
+/*   Updated: 2024/05/07 16:51:32 by xroca-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,13 +71,13 @@ static int	error_syntax(char **argv)
 		if (argv[i][j] == '-' || argv[i][j] == '+')
 		{
 			if (!(argv[i][j + 1] >= '0' && argv[i][j + 1] <= '9'))
-				return (printf("Write numbers\n"));
+				return (printf("Must be numbers.\n"));
 			j++;
 		}
 		while (argv[i][j])
 		{
 			if (!(argv[i][j] >= '0' && argv[i][j] <= '9'))
-				return (printf("Write numbers\n"));
+				return (printf("Must be numbers.\n"));
 			j++;
 		}
 		i++;
