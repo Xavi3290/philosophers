@@ -6,7 +6,7 @@
 /*   By: xroca-pe <xroca-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/25 12:03:41 by xroca-pe          #+#    #+#             */
-/*   Updated: 2024/05/08 12:53:49 by xroca-pe         ###   ########.fr       */
+/*   Updated: 2024/05/15 16:06:17 by xroca-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,8 +80,9 @@ static int	routine(t_philo *philo)
 {
 	while (philo->data->alive)
 	{
+		print_info(philo, "pass");
 		check_alive(philo);
-		if (philo->id != philo->data->list[0])
+		if (philo->id == philo->data->list[0])
 			continue ;
 		if (philo->data->philo_num != 1)
 		{
