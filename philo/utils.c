@@ -6,7 +6,7 @@
 /*   By: xroca-pe <xroca-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/25 12:04:19 by xroca-pe          #+#    #+#             */
-/*   Updated: 2024/05/15 16:08:34 by xroca-pe         ###   ########.fr       */
+/*   Updated: 2024/05/16 12:07:29 by xroca-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,6 @@ int	print_dead(t_philo *philo)
 	if (philo->data->alive)
 	{
 		philo->data->alive = 0;
-		//usleep(1000);
 		printf("%lld %d died\n", time_ms, philo->id);
 	}
 	if (pthread_mutex_unlock(&philo->data->print))
@@ -76,7 +75,7 @@ int	print_info(t_philo *philo, char *str)
 	time_ms = get_time_ms() - philo->data->start;
 	if (philo->data->alive)
 	{
-		if (ft_strcmp(str, "pass"))
+		if (str)
 			printf("%lld %d %s\n", time_ms, philo->id, str);
 	}
 	if (pthread_mutex_unlock(&philo->data->print))

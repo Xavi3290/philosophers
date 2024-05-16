@@ -6,7 +6,7 @@
 /*   By: xroca-pe <xroca-pe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/25 12:04:13 by xroca-pe          #+#    #+#             */
-/*   Updated: 2024/05/15 15:38:09 by xroca-pe         ###   ########.fr       */
+/*   Updated: 2024/05/16 13:13:25 by xroca-pe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,5 @@ t_philo				*init_philos(int argc, char **argv);
 void				modify_list(t_data *data, int id);
 
 void				*actions(void *void_philo);
-int					ft_strcmp(const char *s1, const char *s2);
 
 #endif
